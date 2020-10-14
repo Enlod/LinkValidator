@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  LinkTableViewController.swift
 //  LinkValidator
 //
 //  Created by Roman Voskovskyi on 14.10.2020.
@@ -8,13 +8,12 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+final class LinkTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        
     }
-
-
 }
 
