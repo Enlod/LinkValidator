@@ -11,7 +11,26 @@
 		0DC1746B2537981700A04FB4 /* LinkTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC1746A2537981700A04FB4 /* LinkTableViewController.swift */; };
 		0DC174702537981800A04FB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0DC1746F2537981800A04FB4 /* Assets.xcassets */; };
 		0DC174732537981800A04FB4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DC174712537981800A04FB4 /* LaunchScreen.storyboard */; };
+		0DC1747F2537993800A04FB4 /* Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC1747E2537993800A04FB4 /* Link.swift */; };
+		0DC17482253799A100A04FB4 /* HTTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC17481253799A100A04FB4 /* HTTPRequest.swift */; };
+		0DC174852537A1D900A04FB4 /* LinkListProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC174842537A1D900A04FB4 /* LinkListProvider.swift */; };
+		0DC174872537A39200A04FB4 /* LinkListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC174862537A39200A04FB4 /* LinkListViewModel.swift */; };
+		0DC174892537A41000A04FB4 /* LinkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC174882537A40F00A04FB4 /* LinkViewModel.swift */; };
+		0DC1749C2537AA6400A04FB4 /* LinkTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC1749B2537AA6300A04FB4 /* LinkTableViewCell.swift */; };
+		0DC1749E2537AB7500A04FB4 /* LinkValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC1749D2537AB7500A04FB4 /* LinkValidator.swift */; };
+		0DC174A42537B8E000A04FB4 /* Disposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC174A32537B8E000A04FB4 /* Disposable.swift */; };
+		0DC174A62537B95C00A04FB4 /* Cancellable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC174A52537B95C00A04FB4 /* Cancellable.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0DC174932537A9E100A04FB4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0DC1745B2537981700A04FB4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0DC174622537981700A04FB4;
+			remoteInfo = LinkValidator;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0DC174632537981700A04FB4 /* LinkValidator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LinkValidator.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -20,10 +39,28 @@
 		0DC1746F2537981800A04FB4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0DC174722537981800A04FB4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0DC174742537981800A04FB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0DC1747E2537993800A04FB4 /* Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Link.swift; sourceTree = "<group>"; };
+		0DC17481253799A100A04FB4 /* HTTPRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPRequest.swift; sourceTree = "<group>"; };
+		0DC174842537A1D900A04FB4 /* LinkListProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkListProvider.swift; sourceTree = "<group>"; };
+		0DC174862537A39200A04FB4 /* LinkListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkListViewModel.swift; sourceTree = "<group>"; };
+		0DC174882537A40F00A04FB4 /* LinkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkViewModel.swift; sourceTree = "<group>"; };
+		0DC1748E2537A9E100A04FB4 /* LinkValidatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LinkValidatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0DC174922537A9E100A04FB4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0DC1749B2537AA6300A04FB4 /* LinkTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTableViewCell.swift; sourceTree = "<group>"; };
+		0DC1749D2537AB7500A04FB4 /* LinkValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkValidator.swift; sourceTree = "<group>"; };
+		0DC174A32537B8E000A04FB4 /* Disposable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Disposable.swift; sourceTree = "<group>"; };
+		0DC174A52537B95C00A04FB4 /* Cancellable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cancellable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		0DC174602537981700A04FB4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0DC1748B2537A9E100A04FB4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -37,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				0DC174652537981700A04FB4 /* LinkValidator */,
+				0DC1748F2537A9E100A04FB4 /* LinkValidatorTests */,
 				0DC174642537981700A04FB4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -45,6 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				0DC174632537981700A04FB4 /* LinkValidator.app */,
+				0DC1748E2537A9E100A04FB4 /* LinkValidatorTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -53,12 +92,85 @@
 			isa = PBXGroup;
 			children = (
 				0DC174662537981700A04FB4 /* AppDelegate.swift */,
+				0DC1747B253798EB00A04FB4 /* Module */,
+				0DC174832537A1A500A04FB4 /* Helpers */,
+				0DC1747A253798DD00A04FB4 /* Model */,
+				0DC1747D2537990A00A04FB4 /* Resources */,
+			);
+			path = LinkValidator;
+			sourceTree = "<group>";
+		};
+		0DC1747A253798DD00A04FB4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0DC1747E2537993800A04FB4 /* Link.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0DC1747B253798EB00A04FB4 /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				0DC1747C253798F100A04FB4 /* Link */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		0DC1747C253798F100A04FB4 /* Link */ = {
+			isa = PBXGroup;
+			children = (
 				0DC1746A2537981700A04FB4 /* LinkTableViewController.swift */,
+				0DC1749B2537AA6300A04FB4 /* LinkTableViewCell.swift */,
+				0DC174862537A39200A04FB4 /* LinkListViewModel.swift */,
+				0DC174882537A40F00A04FB4 /* LinkViewModel.swift */,
+				0DC174842537A1D900A04FB4 /* LinkListProvider.swift */,
+				0DC1749D2537AB7500A04FB4 /* LinkValidator.swift */,
+			);
+			path = Link;
+			sourceTree = "<group>";
+		};
+		0DC1747D2537990A00A04FB4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
 				0DC1746F2537981800A04FB4 /* Assets.xcassets */,
 				0DC174712537981800A04FB4 /* LaunchScreen.storyboard */,
 				0DC174742537981800A04FB4 /* Info.plist */,
 			);
-			path = LinkValidator;
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		0DC174832537A1A500A04FB4 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				0DC17481253799A100A04FB4 /* HTTPRequest.swift */,
+				0DC174A32537B8E000A04FB4 /* Disposable.swift */,
+				0DC174A52537B95C00A04FB4 /* Cancellable.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		0DC1748F2537A9E100A04FB4 /* LinkValidatorTests */ = {
+			isa = PBXGroup;
+			children = (
+				0DC174922537A9E100A04FB4 /* Info.plist */,
+				0DC174982537A9FA00A04FB4 /* Modules */,
+			);
+			path = LinkValidatorTests;
+			sourceTree = "<group>";
+		};
+		0DC174982537A9FA00A04FB4 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				0DC174992537AA0500A04FB4 /* Link */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		0DC174992537AA0500A04FB4 /* Link */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Link;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -81,6 +193,24 @@
 			productReference = 0DC174632537981700A04FB4 /* LinkValidator.app */;
 			productType = "com.apple.product-type.application";
 		};
+		0DC1748D2537A9E100A04FB4 /* LinkValidatorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0DC174952537A9E100A04FB4 /* Build configuration list for PBXNativeTarget "LinkValidatorTests" */;
+			buildPhases = (
+				0DC1748A2537A9E100A04FB4 /* Sources */,
+				0DC1748B2537A9E100A04FB4 /* Frameworks */,
+				0DC1748C2537A9E100A04FB4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0DC174942537A9E100A04FB4 /* PBXTargetDependency */,
+			);
+			name = LinkValidatorTests;
+			productName = LinkValidatorTests;
+			productReference = 0DC1748E2537A9E100A04FB4 /* LinkValidatorTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -93,6 +223,10 @@
 				TargetAttributes = {
 					0DC174622537981700A04FB4 = {
 						CreatedOnToolsVersion = 11.7;
+					};
+					0DC1748D2537A9E100A04FB4 = {
+						CreatedOnToolsVersion = 11.7;
+						TestTargetID = 0DC174622537981700A04FB4;
 					};
 				};
 			};
@@ -110,6 +244,7 @@
 			projectRoot = "";
 			targets = (
 				0DC174622537981700A04FB4 /* LinkValidator */,
+				0DC1748D2537A9E100A04FB4 /* LinkValidatorTests */,
 			);
 		};
 /* End PBXProject section */
@@ -124,6 +259,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0DC1748C2537A9E100A04FB4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -131,12 +273,36 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DC1747F2537993800A04FB4 /* Link.swift in Sources */,
+				0DC174892537A41000A04FB4 /* LinkViewModel.swift in Sources */,
 				0DC1746B2537981700A04FB4 /* LinkTableViewController.swift in Sources */,
+				0DC1749C2537AA6400A04FB4 /* LinkTableViewCell.swift in Sources */,
+				0DC174872537A39200A04FB4 /* LinkListViewModel.swift in Sources */,
+				0DC17482253799A100A04FB4 /* HTTPRequest.swift in Sources */,
+				0DC1749E2537AB7500A04FB4 /* LinkValidator.swift in Sources */,
+				0DC174A62537B95C00A04FB4 /* Cancellable.swift in Sources */,
+				0DC174A42537B8E000A04FB4 /* Disposable.swift in Sources */,
 				0DC174672537981700A04FB4 /* AppDelegate.swift in Sources */,
+				0DC174852537A1D900A04FB4 /* LinkListProvider.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0DC1748A2537A9E100A04FB4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0DC174942537A9E100A04FB4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0DC174622537981700A04FB4 /* LinkValidator */;
+			targetProxy = 0DC174932537A9E100A04FB4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		0DC174712537981800A04FB4 /* LaunchScreen.storyboard */ = {
@@ -270,7 +436,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5JR5L7DXV6;
-				INFOPLIST_FILE = LinkValidator/Info.plist;
+				INFOPLIST_FILE = LinkValidator/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -288,7 +454,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 5JR5L7DXV6;
-				INFOPLIST_FILE = LinkValidator/Info.plist;
+				INFOPLIST_FILE = LinkValidator/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -297,6 +463,46 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		0DC174962537A9E100A04FB4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5JR5L7DXV6;
+				INFOPLIST_FILE = LinkValidatorTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Enlod.LinkValidatorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LinkValidator.app/LinkValidator";
+			};
+			name = Debug;
+		};
+		0DC174972537A9E100A04FB4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5JR5L7DXV6;
+				INFOPLIST_FILE = LinkValidatorTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Enlod.LinkValidatorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LinkValidator.app/LinkValidator";
 			};
 			name = Release;
 		};
@@ -317,6 +523,15 @@
 			buildConfigurations = (
 				0DC174782537981800A04FB4 /* Debug */,
 				0DC174792537981800A04FB4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0DC174952537A9E100A04FB4 /* Build configuration list for PBXNativeTarget "LinkValidatorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0DC174962537A9E100A04FB4 /* Debug */,
+				0DC174972537A9E100A04FB4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
