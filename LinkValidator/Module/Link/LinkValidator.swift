@@ -16,13 +16,14 @@ protocol LinkValidator {
 final class LinkHTTPResponseCodeValidationRequest: HTTPRequest, LinkValidator {
     
     private static let successCodes = 200..<300
-    
-    private var _sessionDelegate: URLSessionDelegate?
+    private static let session =
+        URLSession(
+            configuration: .default,
+            delegate: SkipCertificateValidationURLSessionDelegate(),
+            delegateQueue: nil)
     
     init() {
-        let sessionDelegate = SkipCertificateValidationURLSessionDelegate()
-        super.init(urlSession: .init(configuration: .default, delegate: sessionDelegate, delegateQueue: nil))
-        _sessionDelegate = sessionDelegate
+        super.init(urlSession: Self.session)
     }
     
     @discardableResult
