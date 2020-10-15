@@ -10,12 +10,12 @@ import Foundation
 
 protocol LinkListProvider {
     @discardableResult
-    func links(callback: @escaping (Result<[Link], HTTPRequest.Error>) -> Void) -> Cancellable
+    func links(callback: @escaping (Result<[Link], HTTPRequest.DecodeError>) -> Void) -> Cancellable
 }
 
 final class TestAPILinkListRequest: HTTPRequest, LinkListProvider {
     @discardableResult
-    func links(callback: @escaping (Result<[Link], HTTPRequest.Error>) -> Void) -> Cancellable {
+    func links(callback: @escaping (Result<[Link], HTTPRequest.DecodeError>) -> Void) -> Cancellable {
         get("https://testaskback.herokuapp.com/index.php", callback)
     }
 }

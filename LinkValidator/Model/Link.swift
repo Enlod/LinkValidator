@@ -11,26 +11,9 @@ import Foundation
 struct Link: Codable {
     let title: String?
     let link: String
-}
-
-extension Link {
-    enum IsValid {
-        case notDetermined
-        case determined(Bool)
-        
-        func map<Result>(
-            determined: (Bool) -> Result,
-            notDetermined: @autoclosure () -> Result
-        ) -> Result
-        {
-            switch self {
-                
-            case .determined(let isValid):
-                return determined(isValid)
-                
-            case .notDetermined:
-                return notDetermined()
-            }
-        }
+    var isFavorite = false
+    
+    enum CodingKeys: String, CodingKey {
+        case title, link
     }
 }

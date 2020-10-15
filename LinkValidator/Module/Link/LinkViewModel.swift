@@ -12,30 +12,62 @@ final class LinkViewModel {
     
     enum ValidationStatus {
         case inProgress
-        case completed(Link.IsValid)
+        case completed(Bool)
     }
     
     // MARK: - State
     
-    private let _link: Link
     
-    private var _status = ValidationStatus.inProgress
+    private let _didUpdateLink: (Link) -> Void
+    
+    private var _link: Link {
+        didSet {
+            _didUpdateLink(_link)
+        }
+    }
+    
+    private var
+    _validationRequest: Disposable?,
+    _status = ValidationStatus.inProgress
+    
+    private var _isFavoriteCallback: ((Bool) -> Void)? {
+        didSet {
+            _notifyIsFaforiteSubscriber()
+        }
+    }
+    
     private var _validationStatusCallback: ((ValidationStatus) -> Void)? {
         didSet {
-            _notifyValidationStatusSubscribers()
+            _notifyValidationStatusSubscriber()
         }
     }
     
     // MARK: - Init
     
-    init(link: Link, validator: LinkValidator) {
-        _link = link
+    init(
+        link: Link,
+        didUpdateLink: @escaping (Link) -> Void,
+        validator: LinkValidator) {
         
-        validator.isValid(link.link) { [weak self] isValid in
+        _link = link
+        _didUpdateLink = didUpdateLink
+        
+        _validationRequest = .init(validator.isValid(link) { [weak self] isValid in
             guard let self = self else { return }
+            
             self._status = .completed(isValid)
-            self._notifyValidationStatusSubscribers()
+            F.UI(self._notifyValidationStatusSubscriber)
+        })
+    }
+    
+    // MARK: - Input
+    
+    func setIsFavourite(_ isFavourite: Bool) {
+        if _link.isFavorite == isFavourite {
+            return
         }
+        _link.isFavorite = isFavourite
+        _notifyIsFaforiteSubscriber()
     }
     
     // MARK: - Output
@@ -48,24 +80,21 @@ final class LinkViewModel {
         _link.link
     }
     
+    func subscribeIsFavorite(_ callback: @escaping (Bool) -> Void) {
+        _isFavoriteCallback = callback
+    }
+
     func subscribeValidationStatus(_ callback: @escaping (ValidationStatus) -> Void) {
         _validationStatusCallback = callback
     }
     
     // MARK: - Private
     
-    private func _notifyValidationStatusSubscribers() {
-        guard let validationStatusCallback = _validationStatusCallback else { return }
-        
-        let notify = {
-            validationStatusCallback(self._status)
-        }
-        
-        if Thread.isMainThread {
-            notify()
-        }
-        else {
-            DispatchQueue.main.async(execute: notify)
-        }
+    private func _notifyIsFaforiteSubscriber() {
+        _isFavoriteCallback?(_link.isFavorite)
+    }
+
+    private func _notifyValidationStatusSubscriber() {
+        _validationStatusCallback?(self._status)
     }
 }

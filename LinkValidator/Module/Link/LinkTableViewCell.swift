@@ -12,8 +12,29 @@ final class LinkTableViewCell: UITableViewCell {
     
     // MARK: - State
     
-    private let _linkLabel = UILabel()
-    private let _validationActivityIndicatorView = UIActivityIndicatorView()
+    private let _validationActivityIndicator = F.scope(UIActivityIndicatorView()) {
+        $0.color = .systemBlue
+        $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+    }
+    
+    private lazy var _validationActivityIndicatorZeroWidthContraint = _validationActivityIndicator.widthAnchor.constraint(equalToConstant: 0)
+    
+    private let _linkLabel = F.scope(UILabel()) {
+        $0.font = $0.font.withSize(UIFont.smallSystemFontSize)
+        $0.numberOfLines = 0
+    }
+    
+    private lazy var _linkLabelLeftContraint = _linkLabel.leftAnchor.constraint(equalTo: _validationActivityIndicator.rightAnchor)
+    
+    private lazy var _isFavoriteSwitch = F.scope(UISwitch()) {
+        let scale: CGFloat = 0.7
+        $0.transform = CGAffineTransform.identity.scaledBy(x: scale, y: scale)
+        $0.onTintColor = .systemYellow
+        $0.addTarget(self, action: #selector(self._switchFavoriteAction), for: .valueChanged)
+        $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+    }
+    
+    private var _viewModel: LinkViewModel?
     
     // MARK: - Init
     
@@ -30,7 +51,12 @@ final class LinkTableViewCell: UITableViewCell {
     
     func configure(with viewModel: LinkViewModel) {
         
+        _viewModel = viewModel
         _linkLabel.text = viewModel.link
+        
+        viewModel.subscribeIsFavorite { [weak self] isFavorite in
+            self?._isFavoriteSwitch.isOn = isFavorite
+        }
         
         viewModel.subscribeValidationStatus { [weak self] validationStatus in
             self?._handle(validationStatus)
@@ -42,7 +68,8 @@ final class LinkTableViewCell: UITableViewCell {
     private func _handle(_ validationStatus: LinkViewModel.ValidationStatus) {
         
         var isInProgress = false
-        var isValid = Link.IsValid.notDetermined
+        let linkColor: UIColor
+        var isValid: Bool?
         
         switch validationStatus {
         case .inProgress:
@@ -52,33 +79,60 @@ final class LinkTableViewCell: UITableViewCell {
             isValid = _isValid
         }
         
-        isInProgress
-            ? _validationActivityIndicatorView.startAnimating()
-            : _validationActivityIndicatorView.stopAnimating()
+        switch isValid {
+        case nil:
+            linkColor = .black
+        case .some(let isValid):
+            linkColor = isValid ? .systemGreen : .systemRed
+        }
         
-        _linkLabel.textColor = isValid.map(
-            determined: { $0 ? .systemGreen : .systemRed },
-            notDetermined: .black)
+        isInProgress
+            ? _validationActivityIndicator.startAnimating()
+            : _validationActivityIndicator.stopAnimating()
+        
+        let update = {
+            self._validationActivityIndicatorZeroWidthContraint.isActive = !isInProgress
+            self._linkLabelLeftContraint.constant = isInProgress ? .spacing : 0
+            self._linkLabel.textColor = linkColor
+            self.contentView.layoutIfNeeded()
+        }
+        
+        if window == nil {
+            update()
+        }
+        else {
+            UIView.animate(
+                withDuration: 0.3,
+                delay: 0,
+                usingSpringWithDamping: 0.7,
+                initialSpringVelocity: 0, options: .curveEaseInOut,
+                animations: update)
+        }
     }
     
     private func _makeLayout() {
         
-        _validationActivityIndicatorView.color = .blue
-        
-        [_linkLabel, _validationActivityIndicatorView].forEach {
+        [_validationActivityIndicator, _linkLabel, _isFavoriteSwitch].forEach {
             contentView.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
         NSLayoutConstraint.activate([
+            _validationActivityIndicator.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: .spacing * 2),
+            _validationActivityIndicator.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            
             _linkLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .spacing),
-            _linkLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: .spacing * 2),
-            _linkLabel.rightAnchor.constraint(equalTo: _validationActivityIndicatorView.leftAnchor, constant: -.spacing),
+            _linkLabelLeftContraint,
+            _linkLabel.rightAnchor.constraint(equalTo: _isFavoriteSwitch.leftAnchor, constant: -.spacing * 2),
             _linkLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -.spacing),
             
-            _validationActivityIndicatorView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -.spacing * 2),
-            _validationActivityIndicatorView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+            _isFavoriteSwitch.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant:  -.spacing),
+            _isFavoriteSwitch.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
+    }
+    
+    @objc private func _switchFavoriteAction() {
+        _viewModel?.setIsFavourite(_isFavoriteSwitch.isOn)
     }
 }
 

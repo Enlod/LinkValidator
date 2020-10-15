@@ -10,6 +10,11 @@ import Foundation
 
 class HTTPRequest {
     
+    enum DecodeError: Swift.Error {
+        case unexpectedServerResponse
+        case underlying(Error)
+    }
+    
     enum Error: Swift.Error {
         case mailformedURL
         case noResponse
@@ -21,8 +26,6 @@ class HTTPRequest {
         let data: Data
         let response: HTTPURLResponse
     }
-    
-    typealias Callback<Value> = (Result<Value, Error>) -> Void
     
     // MARK: - State
     
@@ -37,17 +40,18 @@ class HTTPRequest {
     // MARK: - Input
     
     @discardableResult
-    func get<Value: Decodable>(_ urlString: String, _ callback: @escaping Callback<[Value]>) -> Cancellable {
+    func get<Value: Decodable>(_ urlString: String, _ callback: @escaping (Result<[Value], DecodeError>) -> Void) -> Cancellable {
         get(urlString) { response in
+            
+            let result: Result<[Value], DecodeError>
             
             switch response {
                 
             case .failure(let error):
-                callback(.failure(error))
+                result = .failure(.underlying(error))
                 
             case .success(let response):
                 
-                let result: Result<[Value], Error>
                 do {
                     let values = try JSONDecoder().decode([Value].self, from: response.data)
                     result = .success(values)
@@ -55,13 +59,14 @@ class HTTPRequest {
                 catch {
                     result = .failure(.unexpectedServerResponse)
                 }
-                callback(result)
             }
+            
+            callback(result)
         }
     }
     
     @discardableResult
-    func get(_ urlString: String, _ callback: @escaping Callback<Response>) -> Cancellable {
+    func get(_ urlString: String, _ callback: @escaping (Result<Response, Error>) -> Void) -> Cancellable {
         
         guard let url = URL(string: urlString) else {
             callback(.failure(.mailformedURL))

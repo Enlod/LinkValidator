@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D74D7DC2538AA02002BF9B6 /* LinkIsFavoriteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D74D7DB2538AA02002BF9B6 /* LinkIsFavoriteRepository.swift */; };
 		0DC174672537981700A04FB4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC174662537981700A04FB4 /* AppDelegate.swift */; };
 		0DC1746B2537981700A04FB4 /* LinkTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC1746A2537981700A04FB4 /* LinkTableViewController.swift */; };
 		0DC174702537981800A04FB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0DC1746F2537981800A04FB4 /* Assets.xcassets */; };
@@ -20,6 +21,7 @@
 		0DC1749E2537AB7500A04FB4 /* LinkValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC1749D2537AB7500A04FB4 /* LinkValidator.swift */; };
 		0DC174A42537B8E000A04FB4 /* Disposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC174A32537B8E000A04FB4 /* Disposable.swift */; };
 		0DC174A62537B95C00A04FB4 /* Cancellable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC174A52537B95C00A04FB4 /* Cancellable.swift */; };
+		0DC174A825383E3400A04FB4 /* F.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC174A725383E3400A04FB4 /* F.swift.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0D74D7DB2538AA02002BF9B6 /* LinkIsFavoriteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkIsFavoriteRepository.swift; sourceTree = "<group>"; };
 		0DC174632537981700A04FB4 /* LinkValidator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LinkValidator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DC174662537981700A04FB4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0DC1746A2537981700A04FB4 /* LinkTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTableViewController.swift; sourceTree = "<group>"; };
@@ -50,6 +53,7 @@
 		0DC1749D2537AB7500A04FB4 /* LinkValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkValidator.swift; sourceTree = "<group>"; };
 		0DC174A32537B8E000A04FB4 /* Disposable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Disposable.swift; sourceTree = "<group>"; };
 		0DC174A52537B95C00A04FB4 /* Cancellable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cancellable.swift; sourceTree = "<group>"; };
+		0DC174A725383E3400A04FB4 /* F.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = F.swift.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +127,7 @@
 				0DC1749B2537AA6300A04FB4 /* LinkTableViewCell.swift */,
 				0DC174862537A39200A04FB4 /* LinkListViewModel.swift */,
 				0DC174882537A40F00A04FB4 /* LinkViewModel.swift */,
+				0D74D7DB2538AA02002BF9B6 /* LinkIsFavoriteRepository.swift */,
 				0DC174842537A1D900A04FB4 /* LinkListProvider.swift */,
 				0DC1749D2537AB7500A04FB4 /* LinkValidator.swift */,
 			);
@@ -145,6 +150,7 @@
 				0DC17481253799A100A04FB4 /* HTTPRequest.swift */,
 				0DC174A32537B8E000A04FB4 /* Disposable.swift */,
 				0DC174A52537B95C00A04FB4 /* Cancellable.swift */,
+				0DC174A725383E3400A04FB4 /* F.swift.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -278,10 +284,12 @@
 				0DC1746B2537981700A04FB4 /* LinkTableViewController.swift in Sources */,
 				0DC1749C2537AA6400A04FB4 /* LinkTableViewCell.swift in Sources */,
 				0DC174872537A39200A04FB4 /* LinkListViewModel.swift in Sources */,
+				0D74D7DC2538AA02002BF9B6 /* LinkIsFavoriteRepository.swift in Sources */,
 				0DC17482253799A100A04FB4 /* HTTPRequest.swift in Sources */,
 				0DC1749E2537AB7500A04FB4 /* LinkValidator.swift in Sources */,
 				0DC174A62537B95C00A04FB4 /* Cancellable.swift in Sources */,
 				0DC174A42537B8E000A04FB4 /* Disposable.swift in Sources */,
+				0DC174A825383E3400A04FB4 /* F.swift.swift in Sources */,
 				0DC174672537981700A04FB4 /* AppDelegate.swift in Sources */,
 				0DC174852537A1D900A04FB4 /* LinkListProvider.swift in Sources */,
 			);

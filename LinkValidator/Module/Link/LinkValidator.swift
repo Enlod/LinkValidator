@@ -10,7 +10,7 @@ import Foundation
 
 protocol LinkValidator {
     @discardableResult
-    func isValid(_ link: String, _ callback: @escaping (Link.IsValid) -> Void) -> Cancellable
+    func isValid(_ link: Link, _ callback: @escaping (Bool) -> Void) -> Cancellable
 }
 
 final class LinkHTTPResponseCodeValidationRequest: HTTPRequest, LinkValidator {
@@ -26,32 +26,21 @@ final class LinkHTTPResponseCodeValidationRequest: HTTPRequest, LinkValidator {
     }
     
     @discardableResult
-    func isValid(_ link: String, _ callback: @escaping (Link.IsValid) -> Void) -> Cancellable {
-        get(link) { response in
+    func isValid(_ link: Link, _ callback: @escaping (Bool) -> Void) -> Cancellable {
+        get(link.link) { response in
+            
+            let result: Bool
             
             switch response {
                 
-            case .failure(let error):
-                callback(error.isValidLink)
+            case .failure:
+                result = false
                 
-            case .success(let httpResponse):
-                callback(.determined(
-                    Self.successCodes.contains(httpResponse.response.statusCode)))
+            case .success(let response):
+                result = Self.successCodes.contains(response.response.statusCode)
             }
-        }
-    }
-}
-
-fileprivate extension HTTPRequest.Error {
-    var isValidLink: Link.IsValid {
-        switch self {
-        case .mailformedURL:
-            return .determined(false)
             
-        case .noResponse,
-             .underlying,
-             .unexpectedServerResponse:
-            return .notDetermined
+            callback(result)
         }
     }
 }
