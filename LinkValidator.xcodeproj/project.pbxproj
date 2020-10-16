@@ -16,6 +16,8 @@
 		0D74D7E425399AEC002BF9B6 /* HTTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC17481253799A100A04FB4 /* HTTPRequest.swift */; };
 		0D74D7E625399D53002BF9B6 /* Disposable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC174A32537B8E000A04FB4 /* Disposable.swift */; };
 		0D74D7E725399D59002BF9B6 /* F.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC174A725383E3400A04FB4 /* F.swift.swift */; };
+		0D74D7E92539A654002BF9B6 /* LinkIsFavoriteRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D74D7E82539A654002BF9B6 /* LinkIsFavoriteRepositoryTests.swift */; };
+		0D74D7EA2539A689002BF9B6 /* LinkIsFavoriteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D74D7DB2538AA02002BF9B6 /* LinkIsFavoriteRepository.swift */; };
 		0DC174672537981700A04FB4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC174662537981700A04FB4 /* AppDelegate.swift */; };
 		0DC1746B2537981700A04FB4 /* LinkTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC1746A2537981700A04FB4 /* LinkTableViewController.swift */; };
 		0DC174702537981800A04FB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0DC1746F2537981800A04FB4 /* Assets.xcassets */; };
@@ -45,6 +47,7 @@
 /* Begin PBXFileReference section */
 		0D74D7DB2538AA02002BF9B6 /* LinkIsFavoriteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkIsFavoriteRepository.swift; sourceTree = "<group>"; };
 		0D74D7DE25399A78002BF9B6 /* LinkViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkViewModelTests.swift; sourceTree = "<group>"; };
+		0D74D7E82539A654002BF9B6 /* LinkIsFavoriteRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkIsFavoriteRepositoryTests.swift; sourceTree = "<group>"; };
 		0DC174632537981700A04FB4 /* LinkValidator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LinkValidator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DC174662537981700A04FB4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0DC1746A2537981700A04FB4 /* LinkTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkTableViewController.swift; sourceTree = "<group>"; };
@@ -185,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				0D74D7DE25399A78002BF9B6 /* LinkViewModelTests.swift */,
+				0D74D7E82539A654002BF9B6 /* LinkIsFavoriteRepositoryTests.swift */,
 			);
 			path = Link;
 			sourceTree = "<group>";
@@ -311,10 +315,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				0D74D7E325399AE7002BF9B6 /* Cancellable.swift in Sources */,
+				0D74D7EA2539A689002BF9B6 /* LinkIsFavoriteRepository.swift in Sources */,
 				0D74D7E725399D59002BF9B6 /* F.swift.swift in Sources */,
 				0D74D7DF25399A78002BF9B6 /* LinkViewModelTests.swift in Sources */,
 				0D74D7E125399ACE002BF9B6 /* LinkViewModel.swift in Sources */,
 				0D74D7E425399AEC002BF9B6 /* HTTPRequest.swift in Sources */,
+				0D74D7E92539A654002BF9B6 /* LinkIsFavoriteRepositoryTests.swift in Sources */,
 				0D74D7E225399AE6002BF9B6 /* LinkValidator.swift in Sources */,
 				0D74D7E625399D53002BF9B6 /* Disposable.swift in Sources */,
 				0D74D7E025399ACA002BF9B6 /* Link.swift in Sources */,

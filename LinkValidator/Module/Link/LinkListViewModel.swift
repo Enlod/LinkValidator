@@ -86,8 +86,9 @@ final class LinkListViewModelImpl: LinkListViewModel {
         case .failure:
             result = .failure(.failedToLoadLinks)
             
-        case .success(let links):
-            result = .success(_linkIsFavoriteRepository.setIsFavorite(forNew: links).map(_makeViewModel))
+        case .success(var links):
+            _linkIsFavoriteRepository.setIsFavorite(forNew: &links)
+            result = .success(links.map(_makeViewModel))
         }
         
         F.UI {

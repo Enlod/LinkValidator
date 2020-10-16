@@ -9,7 +9,7 @@
 import Foundation
 
 protocol LinkIsFavoriteRepository {
-    func setIsFavorite(forNew links: [Link]) -> [Link]
+    func setIsFavorite(forNew links: inout [Link])
     func handleUpdated(_ link: Link)
 }
 
@@ -21,19 +21,18 @@ final class LinkIsFavoriteRepositoryImpl: LinkIsFavoriteRepository {
     
     // MARK - LinkIsFavoriteRepository
     
-    func setIsFavorite(forNew links: [Link]) -> [Link] {
-        
-        links.map { link in
-            var link = link
-            if _favoriteLinks.contains(link.link) {
-                link.isFavorite = true
+    func setIsFavorite(forNew links: inout [Link]) {
+        links.enumerated().forEach { index, link in
+            if _favoriteLinks.contains(link.link) == false {
+                return
             }
-            return link
+            var link = link
+            link.isFavorite = true
+            links[index] = link
         }
     }
     
     func handleUpdated(_ link: Link) {
-        
         if link.isFavorite {
             _favoriteLinks.insert(link.link)
         }
