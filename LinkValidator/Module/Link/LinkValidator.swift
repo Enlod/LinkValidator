@@ -13,6 +13,16 @@ protocol LinkValidator {
     func isValid(_ link: Link, _ callback: @escaping (Bool) -> Void) -> Cancellable
 }
 
+struct LinkValidatorStub: LinkValidator {
+    
+    var isValid: Bool?
+    
+    func isValid(_ link: Link, _ callback: @escaping (Bool) -> Void) -> Cancellable {
+        isValid.map(callback)
+        return .init()
+    }
+}
+
 final class LinkHTTPResponseCodeValidationRequest: HTTPRequest, LinkValidator {
     
     private static let successCodes = 200..<300

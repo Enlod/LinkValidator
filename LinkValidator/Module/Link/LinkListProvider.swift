@@ -14,6 +14,13 @@ protocol LinkListProvider {
 }
 
 final class TestAPILinkListRequest: HTTPRequest, LinkListProvider {
+    
+    private static let session = URLSession(configuration: .default)
+    
+    init() {
+        super.init(urlSession: Self.session)
+    }
+    
     @discardableResult
     func links(callback: @escaping (Result<[Link], HTTPRequest.DecodeError>) -> Void) -> Cancellable {
         get("https://testaskback.herokuapp.com/index.php", callback)

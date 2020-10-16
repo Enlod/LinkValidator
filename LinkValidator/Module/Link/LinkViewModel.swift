@@ -10,13 +10,14 @@ import Foundation
 
 final class LinkViewModel {
     
-    enum ValidationStatus {
+    enum ValidationStatus: Equatable {
         case inProgress
         case completed(Bool)
     }
     
-    // MARK: - State
+    static var emptyTitle: String { "Empty Title" }
     
+    // MARK: - State
     
     private let _didUpdateLink: (Link) -> Void
     
@@ -73,7 +74,14 @@ final class LinkViewModel {
     // MARK: - Output
     
     var title: String {
-        _link.title ?? "Empty Title"
+        if
+            let title = _link.title,
+            title.isEmpty == false
+        {
+            return title
+        }
+        
+        return Self.emptyTitle
     }
     
     var link: String {
