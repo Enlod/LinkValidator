@@ -14,19 +14,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
-        let linkTableViewController =
-            LinkTableViewController(
-                viewModel: LinkListViewModelImpl(
-                    linkListProvider: TestAPILinkListRequest(httpRequest: HTTPRequestImpl(urlSession: TestAPILinkListRequest.session)),
-                    linkIsFavoriteRepository: LinkIsFavoriteRepositoryImpl()))
         
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
-        window.rootViewController = linkTableViewController
+        window.rootViewController = Self._buildRootViewController()
         window.makeKeyAndVisible()
         
         return true
+    }
+    
+    private static func _buildRootViewController() -> UIViewController {
+        
+        let linkListProvider = TestAPILinkListRequest(
+            httpRequest: HTTPRequestImpl(
+                urlSession: TestAPILinkListRequest.session))
+        
+        let linkValidatorFactory = {
+            LinkHTTPResponseCodeValidationRequest(
+                httpRequest: HTTPRequestImpl(
+                    urlSession: LinkHTTPResponseCodeValidationRequest.session))
+        }
+        
+        let linkListViewModel =
+            LinkListViewModelImpl(
+                linkListProvider: linkListProvider,
+                linkIsFavoriteRepository: LinkIsFavoriteRepositoryImpl(),
+                linkValidatorFactory: linkValidatorFactory)
+        
+        return LinkTableViewController(viewModel: linkListViewModel)
     }
 }
 

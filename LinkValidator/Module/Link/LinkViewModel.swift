@@ -8,12 +8,29 @@
 
 import Foundation
 
-final class LinkViewModel {
+enum LinkViewModelValidationStatus: Equatable {
+    case inProgress
+    case completed(Bool)
+}
+
+enum LinkViewModelEvent {
+    case updatedIsFavorite(Bool)
+    case updatedValidationStatus(LinkViewModelValidationStatus)
+}
+
+protocol LinkViewModel {
+    func setIsFavorite(_ isFavorite: Bool)
     
-    enum ValidationStatus: Equatable {
-        case inProgress
-        case completed(Bool)
-    }
+    var title: String { get }
+    var link: String { get }
+    func subscribeEvents(_ callback: @escaping (LinkViewModelEvent) -> Void)
+}
+
+final class LinkViewModelImpl: LinkViewModel {
+    
+    typealias Error = LinkViewModelValidationStatus
+    typealias Event = LinkViewModelEvent
+    typealias ValidationStatus = LinkViewModelValidationStatus
     
     static var emptyTitle: String { "Empty Title" }
     
@@ -27,21 +44,15 @@ final class LinkViewModel {
         }
     }
     
+    private var _status = ValidationStatus.inProgress {
+        didSet {
+            _notifyUpdatedValidationStatus()
+        }
+    }
+    
     private var
     _validationRequest: Disposable?,
-    _status = ValidationStatus.inProgress
-    
-    private var _isFavoriteCallback: ((Bool) -> Void)? {
-        didSet {
-            _notifyIsFaforiteSubscriber()
-        }
-    }
-    
-    private var _validationStatusCallback: ((ValidationStatus) -> Void)? {
-        didSet {
-            _notifyValidationStatusSubscriber()
-        }
-    }
+    _eventsCallback: ((Event) -> Void)?
     
     // MARK: - Init
     
@@ -55,32 +66,27 @@ final class LinkViewModel {
         
         _validationRequest = .init(validator.isValid(link) { [weak self] isValid in
             guard let self = self else { return }
-            
-            self._status = .completed(isValid)
-            F.UI(self._notifyValidationStatusSubscriber)
+            F.UI {
+                self._status = .completed(isValid)
+            }
         })
     }
     
-    // MARK: - Input
+    // MARK: - LinkViewModel
     
-    func setIsFavourite(_ isFavourite: Bool) {
-        if _link.isFavorite == isFavourite {
+    func setIsFavorite(_ isFavorite: Bool) {
+        if _link.isFavorite == isFavorite {
             return
         }
-        _link.isFavorite = isFavourite
-        _notifyIsFaforiteSubscriber()
+        _link.isFavorite = isFavorite
+        _notifyUpdatedIsFavorite()
     }
     
-    // MARK: - Output
-    
     var title: String {
-        if
-            let title = _link.title,
-            title.isEmpty == false
-        {
+        if let title = _link.title,
+            title.isEmpty == false {
             return title
         }
-        
         return Self.emptyTitle
     }
     
@@ -88,21 +94,19 @@ final class LinkViewModel {
         _link.link
     }
     
-    func subscribeIsFavorite(_ callback: @escaping (Bool) -> Void) {
-        _isFavoriteCallback = callback
-    }
-
-    func subscribeValidationStatus(_ callback: @escaping (ValidationStatus) -> Void) {
-        _validationStatusCallback = callback
+    func subscribeEvents(_ callback: @escaping (LinkViewModelEvent) -> Void) {
+        _eventsCallback = callback
+        _notifyUpdatedIsFavorite()
+        _notifyUpdatedValidationStatus()
     }
     
     // MARK: - Private
     
-    private func _notifyIsFaforiteSubscriber() {
-        _isFavoriteCallback?(_link.isFavorite)
+    private func _notifyUpdatedIsFavorite() {
+        _eventsCallback?(.updatedIsFavorite(_link.isFavorite))
     }
-
-    private func _notifyValidationStatusSubscriber() {
-        _validationStatusCallback?(self._status)
+    
+    private func _notifyUpdatedValidationStatus() {
+        _eventsCallback?(.updatedValidationStatus(_status))
     }
 }

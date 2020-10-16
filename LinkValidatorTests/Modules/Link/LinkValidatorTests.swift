@@ -12,6 +12,8 @@ final class LinkValidatorTests: XCTestCase {
     
     func test() {
         
+        XCTAssertEqual(LinkHTTPResponseCodeValidationRequest.successCodes, 200..<400)
+        
         typealias Response = Result<HTTPRequestResponse, HTTPRequestError>
         
         let success = { (statusCode: Int) in

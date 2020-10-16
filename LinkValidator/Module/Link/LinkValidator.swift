@@ -15,7 +15,7 @@ protocol LinkValidator {
 
 final class LinkHTTPResponseCodeValidationRequest: HTTPRequestContainer, LinkValidator {
     
-    static private let successCodes = 200..<400
+    static let successCodes = 200..<400
     static let session =
         URLSession(
             configuration: .default,

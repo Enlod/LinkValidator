@@ -54,18 +54,23 @@ final class LinkTableViewCell: UITableViewCell {
         _viewModel = viewModel
         _linkLabel.text = viewModel.link
         
-        viewModel.subscribeIsFavorite { [weak self] isFavorite in
-            self?._isFavoriteSwitch.isOn = isFavorite
-        }
-        
-        viewModel.subscribeValidationStatus { [weak self] validationStatus in
-            self?._handle(validationStatus)
+        viewModel.subscribeEvents { [weak self] event in
+            self?._handle(event)
         }
     }
     
     // MARK: - Private
     
-    private func _handle(_ validationStatus: LinkViewModel.ValidationStatus) {
+    private func _handle(_ event: LinkViewModelEvent) {
+        switch event {
+        case .updatedIsFavorite(let isFavorite):
+            _isFavoriteSwitch.isOn = isFavorite
+        case .updatedValidationStatus(let validationStatus):
+            _handle(validationStatus)
+        }
+    }
+    
+    private func _handle(_ validationStatus: LinkViewModelValidationStatus) {
         
         var isInProgress = false
         let linkColor: UIColor
@@ -132,7 +137,7 @@ final class LinkTableViewCell: UITableViewCell {
     }
     
     @objc private func _switchFavoriteAction() {
-        _viewModel?.setIsFavourite(_isFavoriteSwitch.isOn)
+        _viewModel?.setIsFavorite(_isFavoriteSwitch.isOn)
     }
 }
 

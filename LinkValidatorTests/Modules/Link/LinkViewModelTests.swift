@@ -12,28 +12,28 @@ final class LinkViewModelTests: XCTestCase {
     
     func testTitle() {
         let link = Link.mock(title: "some title")
-        let linkViewModel = LinkViewModel.mock(link: link)
+        let linkViewModel = LinkViewModelImpl.mock(link: link)
         
         XCTAssertEqual(link.title, linkViewModel.title)
     }
     
     func testEmptyTitle() {
         let link = Link.mock(title: "")
-        let linkViewModel = LinkViewModel.mock(link: link)
+        let linkViewModel = LinkViewModelImpl.mock(link: link)
         
-        XCTAssertEqual(linkViewModel.title, LinkViewModel.emptyTitle)
+        XCTAssertEqual(linkViewModel.title, LinkViewModelImpl.emptyTitle)
     }
     
     func testNilTitle() {
         let link = Link.mock()
-        let linkViewModel = LinkViewModel.mock(link: link)
+        let linkViewModel = LinkViewModelImpl.mock(link: link)
         
-        XCTAssertEqual(linkViewModel.title, LinkViewModel.emptyTitle)
+        XCTAssertEqual(linkViewModel.title, LinkViewModelImpl.emptyTitle)
     }
     
     func testLink() {
         let link = Link.mock(link: "some link")
-        let linkViewModel = LinkViewModel.mock(link: link)
+        let linkViewModel = LinkViewModelImpl.mock(link: link)
         
         XCTAssertEqual(link.link, linkViewModel.link)
     }
@@ -41,21 +41,25 @@ final class LinkViewModelTests: XCTestCase {
     func testUpdateFavoriteToSameValueShouldNotInvokeCallback() {
         [false, true].forEach { isFavorite in
             
-            let linkViewModel = LinkViewModel.mock(
+            let linkViewModel = LinkViewModelImpl.mock(
                 link: .mock(isFavorite: isFavorite),
                 didUpdateLink: { link in
                     XCTFail()
                 })
             
             var incocations = 0
-            linkViewModel.subscribeIsFavorite { _ in
-                incocations += 1
-                if incocations > 1 {
-                    XCTFail()
+            linkViewModel.subscribeEvents { event in
+                switch event {
+                case .updatedValidationStatus: break
+                case .updatedIsFavorite:
+                    incocations += 1
+                    if incocations > 1 {
+                        XCTFail()
+                    }
                 }
             }
             
-            linkViewModel.setIsFavourite(isFavorite)
+            linkViewModel.setIsFavorite(isFavorite)
         }
     }
     
@@ -65,18 +69,22 @@ final class LinkViewModelTests: XCTestCase {
             var callbackInvocations = 0
             var chageCallbackInvocations = 0
             
-            let linkViewModel = LinkViewModel.mock(
+            let linkViewModel = LinkViewModelImpl.mock(
                 link: .mock(isFavorite: !isFavorite),
                 didUpdateLink: { _link in
                     XCTAssertEqual(_link.isFavorite, isFavorite)
                     chageCallbackInvocations += 1
                 })
             
-            linkViewModel.setIsFavourite(isFavorite)
+            linkViewModel.setIsFavorite(isFavorite)
             
-            linkViewModel.subscribeIsFavorite { _isFavorite in
-                XCTAssertEqual(_isFavorite, isFavorite)
-                callbackInvocations += 1
+            linkViewModel.subscribeEvents { event in
+                switch event {
+                case .updatedValidationStatus: break
+                case .updatedIsFavorite(let _isFavorite):
+                    XCTAssertEqual(_isFavorite, isFavorite)
+                    callbackInvocations += 1
+                }
             }
             
             XCTAssertEqual(callbackInvocations, 1)
@@ -87,10 +95,14 @@ final class LinkViewModelTests: XCTestCase {
     func testReplayIsFavoriteInitialValue() {
         [false, true].forEach { isFavorite in
             
-            let linkViewModel = LinkViewModel.mock(link: .mock(isFavorite: isFavorite))
+            let linkViewModel = LinkViewModelImpl.mock(link: .mock(isFavorite: isFavorite))
             
-            linkViewModel.subscribeIsFavorite { _isFavorite in
-                XCTAssertEqual(isFavorite, _isFavorite)
+            linkViewModel.subscribeEvents { event in
+                switch event {
+                case .updatedValidationStatus: break
+                case .updatedIsFavorite(let _isFavorite):
+                    XCTAssertEqual(isFavorite, _isFavorite)
+                }
             }
         }
     }
@@ -102,16 +114,20 @@ final class LinkViewModelTests: XCTestCase {
         values.forEach { isValid in
             
             let validator = LinkValidatorMock(isValid: isValid)
-            let linkViewModel = LinkViewModel.mock(validator: validator)
+            let linkViewModel = LinkViewModelImpl.mock(validator: validator)
             
-            linkViewModel.subscribeValidationStatus { status in
-                switch isValid {
-                case nil:
-                    XCTAssertEqual(status, .inProgress)
-                case .some(let isValid):
-                    XCTAssertEqual(status, .completed(isValid))
+            linkViewModel.subscribeEvents { event in
+                switch event {
+                case .updatedIsFavorite: break
+                case .updatedValidationStatus(let status):
+                    callbackInvocations += 1
+                    switch isValid {
+                    case nil:
+                        XCTAssertEqual(status, .inProgress)
+                    case .some(let isValid):
+                        XCTAssertEqual(status, .completed(isValid))
+                    }
                 }
-                callbackInvocations += 1
             }
         }
         
@@ -119,12 +135,12 @@ final class LinkViewModelTests: XCTestCase {
     }
 }
 
-fileprivate extension LinkViewModel {
+fileprivate extension LinkViewModelImpl {
     static func mock(
         link: Link = .mock(),
         didUpdateLink: @escaping (Link) -> Void = { _ in },
         validator: LinkValidator = LinkValidatorMock()
-    ) -> LinkViewModel {
+    ) -> LinkViewModelImpl {
         .init(
             link: link,
             didUpdateLink: didUpdateLink,

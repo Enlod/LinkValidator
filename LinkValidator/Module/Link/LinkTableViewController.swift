@@ -30,7 +30,12 @@ final class LinkTableViewController: UITableViewController {
         ])
     }
     
-    private var _links = [LinkViewModel]()
+    private var _links = [LinkViewModel]() {
+        didSet {
+            _refreshButton.isHidden = _links.isEmpty == false
+            tableView.reloadData()
+        }
+    }
     
     // MARK: - Init
     
@@ -87,18 +92,25 @@ final class LinkTableViewController: UITableViewController {
     
     private func _connectViewModel() {
 
-        _viewModel.subscribeRefreshing { [weak self] refreshing in
-            self?._handle(refreshing)
-        }
-        
-        _viewModel.subscribeLinks { [weak self] linksResult in
-            self?._handle(linksResult)
+        _viewModel.subscribeEvents { [weak self] event in
+            self?._handle(event)
         }
         
         _viewModel.requestLinks()
     }
     
-    private func _handle(_ refreshing: Bool) {
+    private func _handle(_ event: LinkListViewModelEvent) {
+        switch event {
+        case .error(let error):
+            _show(error)
+        case .updatedIsRefreshing(let isRefreshing):
+            _update(isRefreshing)
+        case .updatedLinks(let links):
+            _links = links
+        }
+    }
+    
+    private func _update(_ refreshing: Bool) {
         guard let refreshControl = tableView.refreshControl else { return }
         
         if refreshing {
@@ -113,26 +125,10 @@ final class LinkTableViewController: UITableViewController {
         }
     }
     
-    private func _handle(_ linksResult: Result<[LinkViewModel], LinkListViewModelError>) {
-        
-        var links = [LinkViewModel]()
-        
-        switch linksResult {
-        case .failure(let error):
-            let alert = UIAlertController(title: error.localizedDescription, message: nil, preferredStyle: .alert)
-            alert.addAction(.init(title: "Cancel", style: .cancel))
-            alert.addAction(.init(title: "Retry", style: .default) { [weak self] _ in
-                self?._viewModel.requestLinks()
-            })
-            present(alert, animated: true)
-            
-        case .success(let _links):
-            links = _links
-        }
-        
-        _links = links
-        _refreshButton.isHidden = !links.isEmpty
-        tableView.reloadData()
+    private func _show(_ error: LinkListViewModelError) {
+       let alert = UIAlertController(title: error.localizedDescription, message: nil, preferredStyle: .alert)
+        alert.addAction(.init(title: "OK", style: .cancel))
+        present(alert, animated: true)
     }
     
     @objc func _refreshAction() {
