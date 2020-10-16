@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0D0897B6253A471200DE6647 /* LinkViewModel+Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0897B5253A471200DE6647 /* LinkViewModel+Mocks.swift */; };
+		0D0897BA253A538800DE6647 /* LinkListProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0897B9253A538800DE6647 /* LinkListProviderTests.swift */; };
 		0D74D7DC2538AA02002BF9B6 /* LinkIsFavoriteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D74D7DB2538AA02002BF9B6 /* LinkIsFavoriteRepository.swift */; };
 		0D74D7DF25399A78002BF9B6 /* LinkViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D74D7DE25399A78002BF9B6 /* LinkViewModelTests.swift */; };
 		0D74D7E025399ACA002BF9B6 /* Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC1747E2537993800A04FB4 /* Link.swift */; };
@@ -62,6 +63,7 @@
 
 /* Begin PBXFileReference section */
 		0D0897B5253A471200DE6647 /* LinkViewModel+Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LinkViewModel+Mocks.swift"; sourceTree = "<group>"; };
+		0D0897B9253A538800DE6647 /* LinkListProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkListProviderTests.swift; sourceTree = "<group>"; };
 		0D74D7DB2538AA02002BF9B6 /* LinkIsFavoriteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkIsFavoriteRepository.swift; sourceTree = "<group>"; };
 		0D74D7DE25399A78002BF9B6 /* LinkViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkViewModelTests.swift; sourceTree = "<group>"; };
 		0D74D7E82539A654002BF9B6 /* LinkIsFavoriteRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkIsFavoriteRepositoryTests.swift; sourceTree = "<group>"; };
@@ -216,9 +218,9 @@
 		0DC174832537A1A500A04FB4 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				0D74D7EB2539AD5B002BF9B6 /* HTTPRequestContainer.swift */,
 				0DC17481253799A100A04FB4 /* HTTPRequest.swift */,
 				0D74D7EF2539B059002BF9B6 /* HTTPRequestImpl.swift */,
+				0D74D7EB2539AD5B002BF9B6 /* HTTPRequestContainer.swift */,
 				0DC174A32537B8E000A04FB4 /* Disposable.swift */,
 				0DC174A52537B95C00A04FB4 /* Cancellable.swift */,
 				0DC174A725383E3400A04FB4 /* F.swift.swift */,
@@ -251,6 +253,7 @@
 				0D74D7FB253A36C2002BF9B6 /* LinkListViewModelTests.swift */,
 				0D74D7DE25399A78002BF9B6 /* LinkViewModelTests.swift */,
 				0D74D7E82539A654002BF9B6 /* LinkIsFavoriteRepositoryTests.swift */,
+				0D0897B9253A538800DE6647 /* LinkListProviderTests.swift */,
 				0D74D7F62539B1F0002BF9B6 /* LinkValidatorTests.swift */,
 				0D74D803253A4344002BF9B6 /* Mocks */,
 			);
@@ -388,6 +391,7 @@
 				0D74D7E725399D59002BF9B6 /* F.swift.swift in Sources */,
 				0D74D7F42539B13E002BF9B6 /* LinkValidator+Mocks.swift in Sources */,
 				0D74D7DF25399A78002BF9B6 /* LinkViewModelTests.swift in Sources */,
+				0D0897BA253A538800DE6647 /* LinkListProviderTests.swift in Sources */,
 				0D74D7E125399ACE002BF9B6 /* LinkViewModel.swift in Sources */,
 				0D74D7FE253A4268002BF9B6 /* LinkListProvider.swift in Sources */,
 				0D74D7E425399AEC002BF9B6 /* HTTPRequest.swift in Sources */,

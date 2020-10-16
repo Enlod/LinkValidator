@@ -12,13 +12,9 @@ extension Module {
     
     static func linkList() -> UIViewController {
         
-        let linkListProvider = TestAPILinkListRequest(
-            httpRequest: HTTPRequestImpl(
-                urlSession: TestAPILinkListRequest.session))
-        
         let linkListViewModel =
             LinkListViewModelImpl(
-                linkListProvider: linkListProvider,
+                linkListProvider: TestAPILinkListRequest(),
                 linkIsFavoriteRepository: LinkIsFavoriteRepositoryImpl(),
                 linkViewModelFactory: _linkViewModel)
         
