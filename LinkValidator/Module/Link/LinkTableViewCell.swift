@@ -34,7 +34,9 @@ final class LinkTableViewCell: UITableViewCell {
         $0.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
     
-    private var _viewModel: LinkViewModel?
+    private var
+    _initialConfigurationCompleted = false,
+    _viewModel: LinkViewModel?
     
     // MARK: - Init
     
@@ -50,6 +52,7 @@ final class LinkTableViewCell: UITableViewCell {
     // MARK: - Input
     
     func configure(with viewModel: LinkViewModel) {
+        _initialConfigurationCompleted = false
         
         _viewModel = viewModel
         _linkLabel.text = viewModel.link
@@ -57,6 +60,7 @@ final class LinkTableViewCell: UITableViewCell {
         viewModel.subscribeEvents { [weak self] event in
             self?._handle(event)
         }
+        _initialConfigurationCompleted = true
     }
     
     // MARK: - Private
@@ -102,7 +106,7 @@ final class LinkTableViewCell: UITableViewCell {
             self.contentView.layoutIfNeeded()
         }
         
-        if window == nil {
+        if !_initialConfigurationCompleted || window == nil {
             update()
         }
         else {
