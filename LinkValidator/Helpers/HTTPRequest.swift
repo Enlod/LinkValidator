@@ -26,7 +26,7 @@ protocol HTTPRequest {
 
 enum HTTPRequestDecodeError: Swift.Error {
     case unexpectedServerResponse
-    case underlying(Error)
+    case underlying(HTTPRequestError)
 }
 
 extension HTTPRequest {

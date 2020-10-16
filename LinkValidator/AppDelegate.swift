@@ -17,31 +17,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
-        window.rootViewController = Self._buildRootViewController()
+        window.rootViewController = Module.linkList()
         window.makeKeyAndVisible()
         
         return true
-    }
-    
-    private static func _buildRootViewController() -> UIViewController {
-        
-        let linkListProvider = TestAPILinkListRequest(
-            httpRequest: HTTPRequestImpl(
-                urlSession: TestAPILinkListRequest.session))
-        
-        let linkValidatorFactory = {
-            LinkHTTPResponseCodeValidationRequest(
-                httpRequest: HTTPRequestImpl(
-                    urlSession: LinkHTTPResponseCodeValidationRequest.session))
-        }
-        
-        let linkListViewModel =
-            LinkListViewModelImpl(
-                linkListProvider: linkListProvider,
-                linkIsFavoriteRepository: LinkIsFavoriteRepositoryImpl(),
-                linkValidatorFactory: linkValidatorFactory)
-        
-        return LinkTableViewController(viewModel: linkListViewModel)
     }
 }
 

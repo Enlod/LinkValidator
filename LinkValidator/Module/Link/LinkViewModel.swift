@@ -26,6 +26,8 @@ protocol LinkViewModel {
     func subscribeEvents(_ callback: @escaping (LinkViewModelEvent) -> Void)
 }
 
+typealias LinkViewModelFactory = (Link, _ didChange: @escaping (Link) -> Void) -> LinkViewModel
+
 final class LinkViewModelImpl: LinkViewModel {
     
     typealias Error = LinkViewModelValidationStatus

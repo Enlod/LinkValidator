@@ -19,6 +19,7 @@ final class LinkIsFavoriteRepositoryTests: XCTestCase {
         
         var newLinks = (0..<120).map { Link.stub(index: $0, isFavorite: false) }
         repository.setIsFavorite(forNew: &newLinks)
+        XCTAssertEqual(newLinks.count, 120)
         
         newLinks.enumerated().forEach { index, link in
             var isFavorite = false

@@ -39,14 +39,8 @@ final class LinkListViewModelImpl: LinkListViewModel {
     private let
     _linkListProvider: LinkListProvider,
     _linkIsFavoriteRepository: LinkIsFavoriteRepository,
-    _linkValidatorFactory: () -> LinkValidator,
+    _linkViewModelFactory: LinkViewModelFactory,
     _lock = NSRecursiveLock()
-    
-    private var _requestLinks: Disposable? {
-        didSet {
-            _notifyUpdatedIsRefreshing()
-        }
-    }
     
     private var _links: Result<[LinkViewModel], LinkListViewModelError>? {
         didSet {
@@ -54,24 +48,27 @@ final class LinkListViewModelImpl: LinkListViewModel {
         }
     }
     
-    private var _eventsCallback: ((Event) -> Void)?
+    private var
+    _requestLinks: Disposable?,
+    _eventsCallback: ((Event) -> Void)?
     
     // MARK: - Init
     
     init(
         linkListProvider: LinkListProvider,
         linkIsFavoriteRepository: LinkIsFavoriteRepository,
-        linkValidatorFactory: @escaping () -> LinkValidator) {
+        linkViewModelFactory: @escaping LinkViewModelFactory) {
         
         _linkListProvider = linkListProvider
         _linkIsFavoriteRepository = linkIsFavoriteRepository
-        _linkValidatorFactory = linkValidatorFactory
+        _linkViewModelFactory = linkViewModelFactory
     }
     
     // MARK: - LinkListViewModel
     
     func requestLinks() {
         if _requestLinks != nil { return }
+        _notifyUpdatedIsRefreshing(true)
         _requestLinks = .init(_linkListProvider.links { [weak self] linksResult in
             self?._handle(linksResult)
         })
@@ -79,6 +76,8 @@ final class LinkListViewModelImpl: LinkListViewModel {
     
     func subscribeEvents(_ callback: @escaping (LinkListViewModelEvent) -> Void) {
         _eventsCallback = callback
+        _notifyUpdatedIsRefreshing(_requestLinks != nil)
+        _notifyUpdatedLinksAndError()
     }
     
     // MARK: - Private
@@ -98,23 +97,22 @@ final class LinkListViewModelImpl: LinkListViewModel {
             links = .success(_links.map(_makeViewModel))
         }
         
+        self._requestLinks = nil
+        
         F.UI {
-            self._requestLinks = nil
+            self._notifyUpdatedIsRefreshing(false)
             self._links = links
         }
     }
     
     private func _makeViewModel(for link: Link) -> LinkViewModel {
-        LinkViewModelImpl(
-            link: link,
-            didUpdateLink: { [weak self] link in
-                self?._linkIsFavoriteRepository.handleUpdated(link)
-            },
-            validator: _linkValidatorFactory())
+        _linkViewModelFactory(link) { [weak self] link in
+            self?._linkIsFavoriteRepository.handleUpdated(link)
+        }
     }
     
-    private func _notifyUpdatedIsRefreshing() {
-        _eventsCallback?(.updatedIsRefreshing(_requestLinks != nil))
+    private func _notifyUpdatedIsRefreshing(_ isRefreshing: Bool) {
+        _eventsCallback?(.updatedIsRefreshing(isRefreshing))
     }
     
     private func _notifyUpdatedLinksAndError() {

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Link: Codable {
+struct Link: Codable, Equatable {
     let title: String?
     let link: String
     var isFavorite = false
