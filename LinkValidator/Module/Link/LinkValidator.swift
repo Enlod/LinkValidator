@@ -13,32 +13,18 @@ protocol LinkValidator {
     func isValid(_ link: Link, _ callback: @escaping (Bool) -> Void) -> Cancellable
 }
 
-struct LinkValidatorStub: LinkValidator {
+final class LinkHTTPResponseCodeValidationRequest: HTTPRequestContainer, LinkValidator {
     
-    var isValid: Bool?
-    
-    func isValid(_ link: Link, _ callback: @escaping (Bool) -> Void) -> Cancellable {
-        isValid.map(callback)
-        return .init()
-    }
-}
-
-final class LinkHTTPResponseCodeValidationRequest: HTTPRequest, LinkValidator {
-    
-    private static let successCodes = 200..<300
-    private static let session =
+    static private let successCodes = 200..<400
+    static let session =
         URLSession(
             configuration: .default,
             delegate: SkipCertificateValidationURLSessionDelegate(),
             delegateQueue: nil)
     
-    init() {
-        super.init(urlSession: Self.session)
-    }
-    
     @discardableResult
     func isValid(_ link: Link, _ callback: @escaping (Bool) -> Void) -> Cancellable {
-        get(link.link) { response in
+        httpRequest.get(link.link) { response in
             
             let result: Bool
             

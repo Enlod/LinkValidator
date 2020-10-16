@@ -10,19 +10,15 @@ import Foundation
 
 protocol LinkListProvider {
     @discardableResult
-    func links(callback: @escaping (Result<[Link], HTTPRequest.DecodeError>) -> Void) -> Cancellable
+    func links(callback: @escaping (Result<[Link], HTTPRequestDecodeError>) -> Void) -> Cancellable
 }
 
-final class TestAPILinkListRequest: HTTPRequest, LinkListProvider {
+final class TestAPILinkListRequest: HTTPRequestContainer, LinkListProvider {
     
-    private static let session = URLSession(configuration: .default)
-    
-    init() {
-        super.init(urlSession: Self.session)
-    }
+    static let session = URLSession(configuration: .default)
     
     @discardableResult
-    func links(callback: @escaping (Result<[Link], HTTPRequest.DecodeError>) -> Void) -> Cancellable {
-        get("https://testaskback.herokuapp.com/index.php", callback)
+    func links(callback: @escaping (Result<[Link], HTTPRequestDecodeError>) -> Void) -> Cancellable {
+        httpRequest.get("https://testaskback.herokuapp.com/index.php", callback)
     }
 }

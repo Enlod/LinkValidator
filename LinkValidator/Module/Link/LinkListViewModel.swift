@@ -70,7 +70,7 @@ final class LinkListViewModelImpl: LinkListViewModel {
     
     // MARK: - Private
     
-    private func _handle(_ linksResult: Result<[Link], HTTPRequest.DecodeError>) {
+    private func _handle(_ linksResult: Result<[Link], HTTPRequestDecodeError>) {
         
         _lock.lock(); defer { _lock.unlock() }
         
@@ -103,6 +103,6 @@ final class LinkListViewModelImpl: LinkListViewModel {
             didUpdateLink: { [weak self] link in
                 self?._linkIsFavoriteRepository.handleUpdated(link)
             },
-            validator: LinkHTTPResponseCodeValidationRequest())
+            validator: LinkHTTPResponseCodeValidationRequest(httpRequest: HTTPRequestImpl(urlSession: LinkHTTPResponseCodeValidationRequest.session)))
     }
 }

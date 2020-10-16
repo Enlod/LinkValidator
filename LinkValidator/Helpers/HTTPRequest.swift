@@ -8,42 +8,33 @@
 
 import Foundation
 
-class HTTPRequest {
-    
-    enum DecodeError: Swift.Error {
-        case unexpectedServerResponse
-        case underlying(Error)
-    }
-    
-    enum Error: Swift.Error {
-        case mailformedURL
-        case noResponse
-        case unexpectedServerResponse
-        case underlying(Swift.Error)
-    }
-    
-    struct Response {
-        let data: Data
-        let response: HTTPURLResponse
-    }
-    
-    // MARK: - State
-    
-    private let _urlSession: URLSession
-    
-    // MARK: - Init
-    
-    init(urlSession: URLSession) {
-        _urlSession = urlSession
-    }
-    
-    // MARK: - Input
-    
+enum HTTPRequestError: Swift.Error {
+    case mailformedURL
+    case noResponse
+    case underlying(Swift.Error)
+}
+
+struct HTTPRequestResponse {
+    let data: Data
+    let response: HTTPURLResponse
+}
+
+protocol HTTPRequest {
+     @discardableResult
+     func get(_ urlString: String, _ callback: @escaping (Result<HTTPRequestResponse, HTTPRequestError>) -> Void) -> Cancellable
+}
+
+enum HTTPRequestDecodeError: Swift.Error {
+    case unexpectedServerResponse
+    case underlying(Error)
+}
+
+extension HTTPRequest {
     @discardableResult
-    func get<Value: Decodable>(_ urlString: String, _ callback: @escaping (Result<[Value], DecodeError>) -> Void) -> Cancellable {
+    func get<Value: Decodable>(_ urlString: String, _ callback: @escaping (Result<[Value], HTTPRequestDecodeError>) -> Void) -> Cancellable {
         get(urlString) { response in
             
-            let result: Result<[Value], DecodeError>
+            let result: Result<[Value], HTTPRequestDecodeError>
             
             switch response {
                 
@@ -63,35 +54,5 @@ class HTTPRequest {
             
             callback(result)
         }
-    }
-    
-    @discardableResult
-    func get(_ urlString: String, _ callback: @escaping (Result<Response, Error>) -> Void) -> Cancellable {
-        
-        guard let url = URL(string: urlString) else {
-            callback(.failure(.mailformedURL))
-            return Cancellable()
-        }
-        
-        let task = _urlSession.dataTask(with: url) { data, response, error in
-            
-            if let error = error {
-                callback(.failure(.underlying(error)))
-                return
-            }
-            
-            guard
-                let data = data,
-                let response = response as? HTTPURLResponse
-            else {
-                callback(.failure(.noResponse))
-                return
-            }
-            
-            callback(.success(Response(data: data, response: response)))
-        }
-        task.resume()
-        
-        return Cancellable(task.cancel)
     }
 }

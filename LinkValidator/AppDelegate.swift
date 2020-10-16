@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let linkTableViewController =
             LinkTableViewController(
                 viewModel: LinkListViewModelImpl(
-                    linkListProvider: TestAPILinkListRequest(),
+                    linkListProvider: TestAPILinkListRequest(httpRequest: HTTPRequestImpl(urlSession: TestAPILinkListRequest.session)),
                     linkIsFavoriteRepository: LinkIsFavoriteRepositoryImpl()))
         
         let window = UIWindow(frame: UIScreen.main.bounds)

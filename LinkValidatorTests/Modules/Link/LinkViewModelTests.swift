@@ -11,29 +11,29 @@ import XCTest
 final class LinkViewModelTests: XCTestCase {
     
     func testTitle() {
-        let link = Link(title: "some title", link: "")
-        let linkViewModel = LinkViewModel.stub(link: link)
+        let link = Link.mock(title: "some title")
+        let linkViewModel = LinkViewModel.mock(link: link)
         
         XCTAssertEqual(link.title, linkViewModel.title)
     }
     
     func testEmptyTitle() {
-        let link = Link(title: "", link: "")
-        let linkViewModel = LinkViewModel.stub(link: link)
+        let link = Link.mock(title: "")
+        let linkViewModel = LinkViewModel.mock(link: link)
         
         XCTAssertEqual(linkViewModel.title, LinkViewModel.emptyTitle)
     }
     
     func testNilTitle() {
-        let link = Link(title: nil, link: "")
-        let linkViewModel = LinkViewModel.stub(link: link)
+        let link = Link.mock()
+        let linkViewModel = LinkViewModel.mock(link: link)
         
         XCTAssertEqual(linkViewModel.title, LinkViewModel.emptyTitle)
     }
     
     func testLink() {
-        let link = Link(title: nil, link: "some link")
-        let linkViewModel = LinkViewModel.stub(link: link)
+        let link = Link.mock(link: "some link")
+        let linkViewModel = LinkViewModel.mock(link: link)
         
         XCTAssertEqual(link.link, linkViewModel.link)
     }
@@ -41,11 +41,11 @@ final class LinkViewModelTests: XCTestCase {
     func testUpdateFavoriteToSameValueShouldNotInvokeCallback() {
         [false, true].forEach { isFavorite in
             
-            var link = Link(title: nil, link: "")
-            link.isFavorite = isFavorite
-            let linkViewModel = LinkViewModel.stub(link: link, didUpdateLink: { link in
-                XCTFail()
-            })
+            let linkViewModel = LinkViewModel.mock(
+                link: .mock(isFavorite: isFavorite),
+                didUpdateLink: { link in
+                    XCTFail()
+                })
             
             var incocations = 0
             linkViewModel.subscribeIsFavorite { _ in
@@ -65,12 +65,12 @@ final class LinkViewModelTests: XCTestCase {
             var callbackInvocations = 0
             var chageCallbackInvocations = 0
             
-            var link = Link(title: nil, link: "")
-            link.isFavorite = !isFavorite
-            let linkViewModel = LinkViewModel.stub(link: link, didUpdateLink: { _link in
-                XCTAssertEqual(_link.isFavorite, isFavorite)
-                chageCallbackInvocations += 1
-            })
+            let linkViewModel = LinkViewModel.mock(
+                link: .mock(isFavorite: !isFavorite),
+                didUpdateLink: { _link in
+                    XCTAssertEqual(_link.isFavorite, isFavorite)
+                    chageCallbackInvocations += 1
+                })
             
             linkViewModel.setIsFavourite(isFavorite)
             
@@ -87,12 +87,10 @@ final class LinkViewModelTests: XCTestCase {
     func testReplayIsFavoriteInitialValue() {
         [false, true].forEach { isFavorite in
             
-            var link = Link(title: nil, link: "")
-            link.isFavorite = isFavorite
-            let linkViewModel = LinkViewModel.stub(link: link)
+            let linkViewModel = LinkViewModel.mock(link: .mock(isFavorite: isFavorite))
             
-            linkViewModel.subscribeIsFavorite { isFavorite in
-                XCTAssertEqual(isFavorite, link.isFavorite)
+            linkViewModel.subscribeIsFavorite { _isFavorite in
+                XCTAssertEqual(isFavorite, _isFavorite)
             }
         }
     }
@@ -103,8 +101,8 @@ final class LinkViewModelTests: XCTestCase {
         
         values.forEach { isValid in
             
-            let validator = LinkValidatorStub(isValid: isValid)
-            let linkViewModel = LinkViewModel.stub(validator: validator)
+            let validator = LinkValidatorMock(isValid: isValid)
+            let linkViewModel = LinkViewModel.mock(validator: validator)
             
             linkViewModel.subscribeValidationStatus { status in
                 switch isValid {
@@ -122,10 +120,10 @@ final class LinkViewModelTests: XCTestCase {
 }
 
 fileprivate extension LinkViewModel {
-    static func stub(
-        link: Link = .init(title: nil, link: ""),
+    static func mock(
+        link: Link = .mock(),
         didUpdateLink: @escaping (Link) -> Void = { _ in },
-        validator: LinkValidator = LinkValidatorStub()
+        validator: LinkValidator = LinkValidatorMock()
     ) -> LinkViewModel {
         .init(
             link: link,
