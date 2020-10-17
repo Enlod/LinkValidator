@@ -25,7 +25,9 @@ final class LinkListViewModelTests: XCTestCase {
     
     func testIsRefresing() {
         var values = [Bool]()
-        let viewModel = LinkListViewModelImpl.stub()
+        let listProvider = LinkListProviderMock()
+        listProvider.links = .success([])
+        let viewModel = LinkListViewModelImpl.stub(listProvider: listProvider)
         viewModel.subscribeEvents { event in
             switch event {
             case .error, .updatedLinks: break
@@ -37,9 +39,25 @@ final class LinkListViewModelTests: XCTestCase {
         XCTAssertEqual(values, [false, true, false])
     }
     
+    func testNotCallingLinksProviderTwice() {
+        let listProvider = LinkListProviderMock()
+        let viewModel = LinkListViewModelImpl.stub(listProvider: listProvider)
+        viewModel.requestLinks()
+        viewModel.requestLinks()
+        XCTAssertEqual(listProvider.invokes, 1)
+    }
+    
+    func testNotCallingLinksProviderBeforeViewRequested() {
+        let listProvider = LinkListProviderMock()
+        let viewModel = LinkListViewModelImpl.stub(listProvider: listProvider)
+        XCTAssertEqual(listProvider.invokes, 0)
+        viewModel.requestLinks()
+        XCTAssertEqual(listProvider.invokes, 1)
+    }
+    
     func testError() {
         var invocations = 0
-        var listProvider = LinkListProviderMock()
+        let listProvider = LinkListProviderMock()
         listProvider.links = .failure(.unexpectedServerResponse)
         let viewModel = LinkListViewModelImpl.stub(listProvider: listProvider)
         viewModel.subscribeEvents { event in
@@ -57,7 +75,7 @@ final class LinkListViewModelTests: XCTestCase {
         var invocations = 0
         let links = (0..<10).map { _ in Link.mock() }
         
-        var listProvider = LinkListProviderMock()
+        let listProvider = LinkListProviderMock()
         listProvider.links = .success(links)
         
         let viewModel = LinkListViewModelImpl.stub(listProvider: listProvider)
@@ -80,7 +98,7 @@ final class LinkListViewModelTests: XCTestCase {
     func testIsFavoriteRepositoryInvoked() {
         let links = (0..<10).map { _ in Link.mock() }
         
-        var listProvider = LinkListProviderMock()
+        let listProvider = LinkListProviderMock()
         listProvider.links = .success(links)
         
         var setIsFavoriteInvocations = 0

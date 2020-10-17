@@ -8,12 +8,14 @@
 
 import Foundation
 
-struct LinkListProviderMock: LinkListProvider {
+final class LinkListProviderMock: LinkListProvider {
     
-    var links = Result<[Link], HTTPRequestDecodeError>.success([])
+    var links: Result<[Link], HTTPRequestDecodeError>?
+    var invokes = 0
     
     func links(callback: @escaping (Result<[Link], HTTPRequestDecodeError>) -> Void) -> Cancellable {
-        callback(links)
+        invokes += 1
+        links.map(callback)
         return .init()
     }
 }
