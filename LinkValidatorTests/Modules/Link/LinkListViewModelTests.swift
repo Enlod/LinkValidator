@@ -79,47 +79,35 @@ final class LinkListViewModelTests: XCTestCase {
     
     func testIsFavoriteRepositoryInvoked() {
         let links = (0..<10).map { _ in Link.mock() }
-        var updatedLinks = [Link]()
         
         var listProvider = LinkListProviderMock()
         listProvider.links = .success(links)
         
-        var linkIsFavoriteRepository = LinkIsFavoriteRepositoryMock()
-        
-        linkIsFavoriteRepository.handleUpdated = { link in
-            updatedLinks.append(link)
-        }
-        
         var setIsFavoriteInvocations = 0
+        let linkIsFavoriteRepository = LinkIsFavoriteRepositoryMock()
         linkIsFavoriteRepository.setIsFavorite = { links in
             setIsFavoriteInvocations += 1
         }
         
         let viewModel = LinkListViewModelImpl.stub(
             listProvider: listProvider,
-            linkIsFavoriteRepository: linkIsFavoriteRepository,
-            callDidUpdateLink: true)
+            linkIsFavoriteRepository: linkIsFavoriteRepository)
         viewModel.requestLinks()
         
         XCTAssertEqual(setIsFavoriteInvocations, 1)
-        XCTAssertEqual(updatedLinks, links)
     }
 }
 
 fileprivate extension LinkListViewModelImpl {
     static func stub(
         listProvider: LinkListProvider = LinkListProviderMock(),
-        linkIsFavoriteRepository: LinkIsFavoriteRepository = LinkIsFavoriteRepositoryMock(),
-        callDidUpdateLink: Bool = false
+        linkIsFavoriteRepository: LinkIsFavoriteRepository = LinkIsFavoriteRepositoryMock()
     ) -> LinkListViewModelImpl {
         .init(
             linkListProvider: listProvider,
             linkIsFavoriteRepository: linkIsFavoriteRepository,
-            linkViewModelFactory: { link, didUpdateLink in
-                if callDidUpdateLink {
-                    didUpdateLink(link)
-                }
-                return LinkViewModelMock()
+            linkViewModelFactory: { _, _ in
+                LinkViewModelMock()
             })
     }
 }

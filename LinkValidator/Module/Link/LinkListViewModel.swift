@@ -106,9 +106,7 @@ final class LinkListViewModelImpl: LinkListViewModel {
     }
     
     private func _makeViewModel(for link: Link) -> LinkViewModel {
-        _linkViewModelFactory(link) { [weak self] link in
-            self?._linkIsFavoriteRepository.handleUpdated(link)
-        }
+        _linkViewModelFactory(link, _linkIsFavoriteRepository)
     }
     
     private func _notifyUpdatedIsRefreshing(_ isRefreshing: Bool) {

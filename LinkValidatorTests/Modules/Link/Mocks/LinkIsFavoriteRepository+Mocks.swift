@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct LinkIsFavoriteRepositoryMock: LinkIsFavoriteRepository {
+final class LinkIsFavoriteRepositoryMock: LinkIsFavoriteRepository {
     
     var setIsFavorite: (([Link]) -> Void)?
     var handleUpdated: ((Link) -> Void)?

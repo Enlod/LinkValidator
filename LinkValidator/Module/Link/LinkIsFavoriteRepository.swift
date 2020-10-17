@@ -8,9 +8,12 @@
 
 import Foundation
 
-protocol LinkIsFavoriteRepository {
-    func setIsFavorite(forNew links: inout [Link])
+protocol LinkIsFavoriteUpdateHandler {
     func handleUpdated(_ link: Link)
+}
+
+protocol LinkIsFavoriteRepository: LinkIsFavoriteUpdateHandler {
+    func setIsFavorite(forNew links: inout [Link])
 }
 
 final class LinkIsFavoriteRepositoryImpl: LinkIsFavoriteRepository {
@@ -21,6 +24,15 @@ final class LinkIsFavoriteRepositoryImpl: LinkIsFavoriteRepository {
     
     // MARK - LinkIsFavoriteRepository
     
+    func handleUpdated(_ link: Link) {
+        if link.isFavorite {
+            _favoriteLinks.insert(link.link)
+        }
+        else {
+            _favoriteLinks.remove(link.link)
+        }
+    }
+    
     func setIsFavorite(forNew links: inout [Link]) {
         links.enumerated().forEach { index, link in
             if _favoriteLinks.contains(link.link) == false {
@@ -29,15 +41,6 @@ final class LinkIsFavoriteRepositoryImpl: LinkIsFavoriteRepository {
             var link = link
             link.isFavorite = true
             links[index] = link
-        }
-    }
-    
-    func handleUpdated(_ link: Link) {
-        if link.isFavorite {
-            _favoriteLinks.insert(link.link)
-        }
-        else {
-            _favoriteLinks.remove(link.link)
         }
     }
 }

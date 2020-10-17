@@ -26,7 +26,7 @@ protocol LinkViewModel {
     func subscribeEvents(_ callback: @escaping (LinkViewModelEvent) -> Void)
 }
 
-typealias LinkViewModelFactory = (Link, _ didChange: @escaping (Link) -> Void) -> LinkViewModel
+typealias LinkViewModelFactory = (Link, _ isFavoriteUpdateHandler: LinkIsFavoriteUpdateHandler) -> LinkViewModel
 
 final class LinkViewModelImpl: LinkViewModel {
     
@@ -38,11 +38,11 @@ final class LinkViewModelImpl: LinkViewModel {
     
     // MARK: - State
     
-    private let _didUpdateLink: (Link) -> Void
+    private let _isFavoriteUpdateHandler: LinkIsFavoriteUpdateHandler
     
     private var _link: Link {
         didSet {
-            _didUpdateLink(_link)
+            _isFavoriteUpdateHandler.handleUpdated(_link)
         }
     }
     
@@ -60,11 +60,11 @@ final class LinkViewModelImpl: LinkViewModel {
     
     init(
         link: Link,
-        didUpdateLink: @escaping (Link) -> Void,
+        isFavoriteUpdateHandler: LinkIsFavoriteUpdateHandler,
         validator: LinkValidator) {
         
         _link = link
-        _didUpdateLink = didUpdateLink
+        _isFavoriteUpdateHandler = isFavoriteUpdateHandler
         
         _validationRequest = .init(validator.isValid(link) { [weak self] isValid in
             guard let self = self else { return }

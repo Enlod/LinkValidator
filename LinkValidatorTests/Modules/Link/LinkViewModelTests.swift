@@ -41,11 +41,14 @@ final class LinkViewModelTests: XCTestCase {
     func testUpdateFavoriteToSameValueShouldNotInvokeCallback() {
         [false, true].forEach { isFavorite in
             
+            let isFavoriteRepository = LinkIsFavoriteRepositoryMock()
+            isFavoriteRepository.handleUpdated = { _ in
+                XCTFail()
+            }
+            
             let linkViewModel = LinkViewModelImpl.mock(
                 link: .mock(isFavorite: isFavorite),
-                didUpdateLink: { link in
-                    XCTFail()
-                })
+                isFavoriteUpdateHandler: isFavoriteRepository)
             
             var incocations = 0
             linkViewModel.subscribeEvents { event in
@@ -69,12 +72,15 @@ final class LinkViewModelTests: XCTestCase {
             var callbackInvocations = 0
             var chageCallbackInvocations = 0
             
+            let isFavoriteRepository = LinkIsFavoriteRepositoryMock()
+            isFavoriteRepository.handleUpdated = { _link in
+                XCTAssertEqual(_link.isFavorite, isFavorite)
+                chageCallbackInvocations += 1
+            }
+            
             let linkViewModel = LinkViewModelImpl.mock(
                 link: .mock(isFavorite: !isFavorite),
-                didUpdateLink: { _link in
-                    XCTAssertEqual(_link.isFavorite, isFavorite)
-                    chageCallbackInvocations += 1
-                })
+                isFavoriteUpdateHandler: isFavoriteRepository)
             
             linkViewModel.setIsFavorite(isFavorite)
             
@@ -138,12 +144,12 @@ final class LinkViewModelTests: XCTestCase {
 fileprivate extension LinkViewModelImpl {
     static func mock(
         link: Link = .mock(),
-        didUpdateLink: @escaping (Link) -> Void = { _ in },
+        isFavoriteUpdateHandler: LinkIsFavoriteUpdateHandler = LinkIsFavoriteRepositoryMock(),
         validator: LinkValidator = LinkValidatorMock()
     ) -> LinkViewModelImpl {
         .init(
             link: link,
-            didUpdateLink: didUpdateLink,
+            isFavoriteUpdateHandler: isFavoriteUpdateHandler,
             validator: validator)
     }
 }

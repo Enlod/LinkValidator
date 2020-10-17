@@ -21,7 +21,7 @@ extension Module {
         return LinkTableViewController(viewModel: linkListViewModel)
     }
     
-    private static func _linkViewModel(link: Link, didChange: @escaping (Link) -> Void) -> LinkViewModel {
+    private static func _linkViewModel(link: Link, isFavoriteUpdateHandler: LinkIsFavoriteUpdateHandler) -> LinkViewModel {
         
         let validator = LinkHTTPResponseCodeValidationRequest(
             httpRequest: HTTPRequestImpl(
@@ -29,7 +29,7 @@ extension Module {
         
         return LinkViewModelImpl(
             link: link,
-            didUpdateLink: didChange,
+            isFavoriteUpdateHandler: isFavoriteUpdateHandler,
             validator: validator)
     }
 }
